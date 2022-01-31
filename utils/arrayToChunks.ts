@@ -1,4 +1,4 @@
-export default function arrayToChunks(arr, size){
+export default function arrayToChunks<T>(arr: T[], size: number){
     const chunkSize = size || 1
     const chunks = []
     for(let i = 0; i < arr.length; i += chunkSize){

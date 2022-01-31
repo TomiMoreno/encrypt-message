@@ -1,6 +1,6 @@
 import { isLetter } from "../../utils/isLetter"
 
-export function caesarEncrypt(message, shift) {
+export function caesarEncrypt(message: string, shift: number) {
 	const messageLetters = message.split('')
 	const encryptedMessage = messageLetters.map(letter => {
 		if(!isLetter(letter)) return letter
