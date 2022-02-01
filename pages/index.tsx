@@ -1,163 +1,63 @@
-import { useState } from 'react'
 import Head from 'next/head'
-import { Textarea, Box, Text, Input, Heading, Button } from '@chakra-ui/react'
-import arrayToChunks from '../utils/arrayToChunks'
-
-const SEPARATOR = ','
-const SPACE_REPLACER = '·'
-const SPACE_REPLACER_REGEX = new RegExp(SPACE_REPLACER, 'g')
-
-const encryptMessage = (message, key) => {
-  const keyLetters = key.split('').map(l => l.toLowerCase())
-  const messageLetters = message.replace(/ /g, SPACE_REPLACER).split('')
-  const chunkedMessage = arrayToChunks(messageLetters, key.length)
-  const lettersMessage = keyLetters.map((letter, i) => {
-    const letters = chunkedMessage.map((chunk) => {
-      return chunk[i]
-    })
-    return {
-      letter,
-      letters
-    }
-  })
-  const sorted = lettersMessage.sort((a, b) => {
-    return a.letter.localeCompare(b.letter)
-  })
-  const encryptedMessage = sorted.map(({ letters }) => {
-    return letters.join('')
-  }).join(SEPARATOR)
-  return encryptedMessage
-}
-
-const desencryptMessage = (message, key) => {
-  const keyLetters = key.split('').map(l => l.toLowerCase()).map((l, i) => ({ letter: l, index: i}))
-  const chunkedMessage = message.replace(SPACE_REPLACER_REGEX, ' ').split(SEPARATOR).map(l => l.split(''))
-  const maxChunkSize = Math.ceil(message.split(SEPARATOR).join('').length / key.length)
-  const sortedKeys = keyLetters.sort((a, b) => {
-    return a.letter.localeCompare(b.letter)
-  })
-  const lettersMessage = sortedKeys.map(({letter, index}, i) => {
-    const letters = chunkedMessage[i]
-    return {
-      letter,
-      letters,
-      index
-    }
-  }
-  )
-  const sorted = lettersMessage.sort((a, b) => {
-    const value = a.index - b.index
-    return value
-  })
-  let decryptedMessage = ""
-  for(let j = 0; j < maxChunkSize; j++){
-    for(let i = 0; i < sorted.length; i++){
-      decryptedMessage = sorted[i].letters.shift() || ""
-    }
-  }
-  return decryptedMessage
-}
+import NextLink from 'next/link'
+import { Box, Heading, LinkBox, LinkOverlay, Text, SimpleGrid} from '@chakra-ui/react'
 
 export default function Home() {
-  const [values, setValues] = useState({
-    message: '',
-    encryptionKey: '',
-    decryptionKey: '',
-    encryptedMessage: ''
-  })
-  const [decryptedMessage, setDecryptedMessage] = useState('')
-  const [encryptedMessage, setEncryptedMessage] = useState('')
-  const handleInputChange = (e) => {
-    const { value, name } = e.target
-    setValues(prevValues => ({ ...prevValues, [name]: value }))
-  }
-
-  const handleEncript = (e) => {
-    e.preventDefault()
-    const encrypted = encryptMessage(values.message, values.encryptionKey)
-    setEncryptedMessage(encrypted)
-  }
-
-  const handleDecrypt = (e) => {
-    e.preventDefault()
-    const decrypted = desencryptMessage(values.encryptedMessage, values.decryptionKey)
-    setDecryptedMessage(decrypted)
-  }
   
-
   return (
     <>
       <Head>
         <title>Encrypt Message</title>
-        <meta name="description" content="Encrypt and decrypt your messages usign the box method" />
+        <meta
+          name="description"
+          content="Encrypt and decrypt your messages usign different methods"
+        />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Box maxW="960px" mx="auto">
-        <Heading
-          as="h1"
-          mb={4}
-          textAlign="center"
-          >
+        <Heading as="h1" mb={4} textAlign="center">
           Encrypt Message
         </Heading>
-        <Text>Message</Text>
-        <Textarea
-          value={values.message}
-          onChange={handleInputChange}
-          name='message'
-          placeholder='Enter your message'
-          mb={4}
-        />
-        <Text>Key</Text>
-        <Input
-          value={values.encryptionKey}
-          onChange={handleInputChange}
-          name="encryptionKey"
-          placeholder='Enter your key'
-          mb={4}
-          />
-        <Button
-          onClick={handleEncript}
-          colorScheme="purple"
-          mb={4}
-          >
-          Encript
-        </Button>
-
-          <Text>Encrypted Message:</Text>
-          <Text
-            fontSize="xl"
-            fontWeight="bold"
-            color="purple.500"
-            mb={4}
-            textAlign="center"
-          >
-            {encryptedMessage}
-          </Text>
-          <Heading as="h2" size="lg" mb={4} textAlign="center">
-            Decrypt Message
-          </Heading>
-          <Text>Encrypted Message</Text>
-          <Textarea
-            value={values.encryptedMessage}
-            name="encryptedMessage"
-            onChange={handleInputChange}
-            placeholder='Enter your message'
-            mb={4}
-          />
-          <Text>Decription Key</Text>
-          <Input
-            value={values.decryptionKey}
-            name="decryptionKey"
-            onChange={handleInputChange}
-            placeholder='Enter your key'
-            mb={4}
-          />
-          <Button onClick={handleDecrypt} colorScheme="purple">Decrypt</Button>
-          <Text fontSize="xl" fontWeight="bold" color="purple.500" mb={4} textAlign="center">
-            {decryptedMessage}
-          </Text>
+        <Heading as="h2" size="lg" mb={4}>
+          Methods
+        </Heading>
+        <SimpleGrid columns={[1, 1, 2]} spacing={8}>
+          <NextLink href="/caesar">
+            <LinkBox as="article" p="5" borderWidth="1px" rounded="md">
+              <Box as="time" dateTime="2021-01-15 15:30:00 +0000 UTC">
+                Substitution
+              </Box>
+              <Heading size="md" my="2">
+                <LinkOverlay href="#">Caesar cipher</LinkOverlay>
+              </Heading>
+              <Text>
+                The Caesar cipher (or Caesar code) is a monoalphabetic
+                substitution cipher, where each letter is replaced by another
+                letter located a little further in the alphabet.
+              </Text>
+            </LinkBox>
+          </NextLink>
+          <NextLink href="/columnarTransposition">
+            <LinkBox as="article" p="5" borderWidth="1px" rounded="md">
+              <Box as="time" dateTime="2021-01-15 15:30:00 +0000 UTC">
+                Transposition
+              </Box>
+              <Heading size="md" my="2">
+                <LinkOverlay href="#">
+                  Columnar transposition cipher
+                </LinkOverlay>
+              </Heading>
+              <Text>
+                The Columnar transposition cipher is a transposition cipher where 
+                the message is written out in rows of a fixed length, and then read
+                out again column by column, and the columns are chosen in some
+                scrambled order. Both the width of the rows and the permutation
+                of the columns are usually defined by a keyword.
+              </Text>
+            </LinkBox>
+          </NextLink>
+        </SimpleGrid>
       </Box>
     </>
-  )
+  );            
 }
