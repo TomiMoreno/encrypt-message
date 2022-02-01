@@ -9,15 +9,13 @@ import {
   Stack,
   Text,
   Textarea,
-  Center,
-  NumberInputStepper,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { caesarEncrypt } from "./encrypt";
-import { caesarDecrypt } from "./decrypt";
+import encrypt from "./encrypt";
+import decrypt from "./decrypt";
 
-export function CaesarCipher() {
+export default function CaesarCipher() {
   return (
     <Stack spacing={8} margin="0 auto" padding={4} maxW="960px" minW="80%">
       <Heading as="h1">Caesar Cipher</Heading>
@@ -28,16 +26,20 @@ export function CaesarCipher() {
 }
 
 function DecryptComponent() {
+  type FormValues = {
+    messageToDecrypt: string;
+    shift: number;
+  };
   const [decryptedMessage, setDecryptedMessage] = useState("");
   const {
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
-  } = useForm();
+  } = useForm<FormValues>();
 
-  function onSubmit(values) {
+  function onSubmit(values:FormValues) {
     try {
-      const decrypted = caesarDecrypt(values.messageToDecrypt, +values.shift);
+      const decrypted = decrypt(values.messageToDecrypt, +values.shift);
       setDecryptedMessage(decrypted);
     } catch (error) {
       console.error(error);
@@ -49,7 +51,7 @@ function DecryptComponent() {
       <Heading as="h2" size="lg" mb={4}>
         Decrypt
       </Heading>
-      <FormControl isInvalid={errors.messageToDecrypt}>
+      <FormControl isInvalid={!!errors.messageToDecrypt}>
         <FormLabel htmlFor="messageToDecrypt">Message to decrypt</FormLabel>
         <Textarea
           id="messageToDecrypt"
@@ -63,7 +65,7 @@ function DecryptComponent() {
         </FormErrorMessage>
       </FormControl>
 
-      <FormControl isInvalid={errors.shift}>
+      <FormControl isInvalid={!!errors.shift}>
         <FormLabel htmlFor="shift">Shift used to encrypt</FormLabel>
         <NumberInput>
           <NumberInputField
@@ -107,16 +109,20 @@ function DecryptComponent() {
 }
 
 function EncryptComponent() {
+  type FormValues = {
+    messageToEncrypt: string;
+    shift: number;
+  };
   const [encryptedMessage, setEncryptedMessage] = useState("");
   const {
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
-  } = useForm();
+  } = useForm<FormValues>();
 
-  function onSubmit(values) {
+  function onSubmit(values: FormValues) {
     try {
-      const encrypted = caesarEncrypt(values.messageToEncrypt, +values.shift);
+      const encrypted = encrypt(values.messageToEncrypt, +values.shift);
       setEncryptedMessage(encrypted);
     } catch (error) {
       console.error(error);
@@ -127,7 +133,7 @@ function EncryptComponent() {
       <Heading as="h2" size="lg" mb={4}>
         Encrypt
       </Heading>
-      <FormControl isInvalid={errors.messageToEncrypt}>
+      <FormControl isInvalid={!!errors.messageToEncrypt}>
         <FormLabel htmlFor="messageToEncrypt">Message to encrypt</FormLabel>
         <Textarea
           id="messageToEncrypt"
@@ -141,7 +147,7 @@ function EncryptComponent() {
         </FormErrorMessage>
       </FormControl>
 
-      <FormControl isInvalid={errors.shift}>
+      <FormControl isInvalid={!!errors.shift}>
         <FormLabel htmlFor="shift">Shift</FormLabel>
         <NumberInput>
           <NumberInputField

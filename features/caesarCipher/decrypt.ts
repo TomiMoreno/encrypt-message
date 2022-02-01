@@ -1,6 +1,6 @@
 import { isLetter } from "../../utils/isLetter"
 
-export function caesarDecrypt(message: string, shift: number) {
+export default function caesarDecrypt(message: string, shift: number) {
 	const messageLetters = message.split('')
 	const decryptedMessage = messageLetters.map(letter => {
 		if(!isLetter(letter)) return letter
