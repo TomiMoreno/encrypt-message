@@ -7,8 +7,11 @@ export default function caesarDecrypt(message: string, shift: number) {
 		const letterCode = letter.charCodeAt(0)
 		const isCapital = letter.toUpperCase() === letter
 		const startingPoint = isCapital ? 65 : 97
-		const absoluteShift = shift % 26 < 0 ? 26 + shift % 26 : shift % 26
-		const decryptedCode = startingPoint + (letterCode - startingPoint + absoluteShift) % 26
+		const absoluteShift = (letterCode- startingPoint - shift) % 26 >= 0
+		? (letterCode- startingPoint - shift) % 26
+		: 26 + (letterCode- startingPoint - shift) % 26
+		const decryptedCode = startingPoint + absoluteShift
+		console.log({ decryptedCode})
 		const decryptedLetter = String.fromCharCode(decryptedCode)
 		return decryptedLetter
 	})

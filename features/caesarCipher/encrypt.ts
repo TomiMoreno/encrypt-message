@@ -7,7 +7,10 @@ export default function caesarEncrypt(message: string, shift: number) {
 		const letterCode = letter.charCodeAt(0)
 		const isCapital = letter.toUpperCase() === letter
 		const startingPoint = isCapital ? 65 : 97
-		const encryptedCode = startingPoint + ((letterCode - startingPoint + shift) % 26) 
+		const absoluteShift = (letterCode- startingPoint + shift) % 26 >= 0
+		? (letterCode- startingPoint + shift) % 26
+		: 26 + (letterCode- startingPoint + shift) % 26
+		const encryptedCode = startingPoint + absoluteShift
 		const encryptedLetter = String.fromCharCode(encryptedCode)
 		return encryptedLetter
 	})

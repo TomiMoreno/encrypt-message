@@ -73,10 +73,9 @@ function DecryptComponent() {
             placeholder="Shift"
             {...register("shift", {
               required: "This is required",
-              min: { value: 0, message: "Minimum value should be 0" },
               pattern: {
-                value: /^[0-9]*$/,
-                message: "Only numbers are allowed",
+                message: "Only positive or negative numbers are allowed",
+                value: /^[+-]?\d+$/,
               },
             })}
           />
@@ -89,7 +88,7 @@ function DecryptComponent() {
       <Button
         mt={4}
         colorScheme="blue"
-        isSubmitting={isSubmitting}
+        isLoading={isSubmitting}
         type="submit"
       >
         Decrypt
@@ -155,11 +154,10 @@ function EncryptComponent() {
             placeholder="Shift"
             {...register("shift", {
               required: "This is required",
-              min: { value: 0, message: "Minimum value should be 0" },
               pattern: {
-                value: /^[0-9]*$/,
-                message: "Only numbers are allowed",
-              },
+                message: "Only positive or negative numbers are allowed",
+                value: /^[+-]?\d+$/,
+              }
             })}
           />
         </NumberInput>
