@@ -36,77 +36,70 @@ export default function BoxesCipher() {
 
   return (
     <>
-      <Head>
-        <title>Encrypt Message</title>
-        <meta name="description" content="Encrypt and decrypt your messages usign the box method" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <Box maxW="960px" mx="auto">
-        <Heading
-          as="h1"
+      <Heading
+        as="h1"
+        mb={4}
+        textAlign="center"
+        >
+        Encrypt Message
+      </Heading>
+      <Text>Message</Text>
+      <Textarea
+        value={values.message}
+        onChange={handleInputChange}
+        name='message'
+        placeholder='Enter your message'
+        mb={4}
+      />
+      <Text>Key</Text>
+      <Input
+        value={values.encryptionKey}
+        onChange={handleInputChange}
+        name="encryptionKey"
+        placeholder='Enter your key'
+        mb={4}
+        />
+      <Button
+        onClick={handleEncript}
+        colorScheme="purple"
+        mb={4}
+        >
+        Encript
+      </Button>
+
+        <Text>Encrypted Message:</Text>
+        <Text
+          fontSize="xl"
+          fontWeight="bold"
+          color="purple.500"
           mb={4}
           textAlign="center"
-          >
-          Encrypt Message
+        >
+          {encryptedMessage}
+        </Text>
+        <Heading as="h2" size="lg" mb={4} textAlign="center">
+          Decrypt Message
         </Heading>
-        <Text>Message</Text>
+        <Text>Encrypted Message</Text>
         <Textarea
-          value={values.message}
+          value={values.encryptedMessage}
+          name="encryptedMessage"
           onChange={handleInputChange}
-          name='message'
           placeholder='Enter your message'
           mb={4}
         />
-        <Text>Key</Text>
+        <Text>Decription Key</Text>
         <Input
-          value={values.encryptionKey}
+          value={values.decryptionKey}
+          name="decryptionKey"
           onChange={handleInputChange}
-          name="encryptionKey"
           placeholder='Enter your key'
           mb={4}
-          />
-        <Button
-          onClick={handleEncript}
-          colorScheme="purple"
-          mb={4}
-          >
-          Encript
-        </Button>
-
-          <Text>Encrypted Message:</Text>
-          <Text
-            fontSize="xl"
-            fontWeight="bold"
-            color="purple.500"
-            mb={4}
-            textAlign="center"
-          >
-            {encryptedMessage}
-          </Text>
-          <Heading as="h2" size="lg" mb={4} textAlign="center">
-            Decrypt Message
-          </Heading>
-          <Text>Encrypted Message</Text>
-          <Textarea
-            value={values.encryptedMessage}
-            name="encryptedMessage"
-            onChange={handleInputChange}
-            placeholder='Enter your message'
-            mb={4}
-          />
-          <Text>Decription Key</Text>
-          <Input
-            value={values.decryptionKey}
-            name="decryptionKey"
-            onChange={handleInputChange}
-            placeholder='Enter your key'
-            mb={4}
-          />
-          <Button onClick={handleDecrypt} colorScheme="purple">Decrypt</Button>
-          <Text fontSize="xl" fontWeight="bold" color="purple.500" mb={4} textAlign="center">
-            {decryptedMessage}
-          </Text>
-      </Box>
+        />
+        <Button onClick={handleDecrypt} colorScheme="purple">Decrypt</Button>
+        <Text fontSize="xl" fontWeight="bold" color="purple.500" mb={4} textAlign="center">
+          {decryptedMessage}
+        </Text>
     </>
   )
 }

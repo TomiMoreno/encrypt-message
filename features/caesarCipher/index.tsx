@@ -17,7 +17,7 @@ import decrypt from "./decrypt";
 
 export default function CaesarCipher() {
   return (
-    <Stack spacing={8} margin="0 auto" padding={4} maxW="960px" minW="80%">
+    <Stack spacing={8}>
       <Heading as="h1">Caesar Cipher</Heading>
       <EncryptComponent />
       <DecryptComponent />

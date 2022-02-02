@@ -1,12 +1,13 @@
 import { ChakraProvider } from '@chakra-ui/react'
 import { AppProps } from 'next/app'
-import NavBar from '../features/NavBar'
+import Layout from '../features/Layout'
 
 function MyApp({ Component, pageProps } : AppProps) {
   return (
     <ChakraProvider>
-      <NavBar />
-      <Component {...pageProps} />
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
     </ChakraProvider>
   )
 }
