@@ -24,7 +24,7 @@ const decryptMessage = (message:string, key:string) => {
   let decryptedMessage = ""
   for(let j = 0; j < maxChunkSize; j++){
     for(let i = 0; i < sorted.length; i++){
-      decryptedMessage = sorted[i].letters.shift() || ""
+      decryptedMessage += sorted[i].letters?.shift() || ""
     }
   }
   return decryptedMessage
