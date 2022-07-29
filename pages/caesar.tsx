@@ -9,7 +9,6 @@ import {
   Stack,
   Text,
   Textarea,
-  Select,
   IconButton,
   Flex,
 } from "@chakra-ui/react";
@@ -131,8 +130,14 @@ function EncryptComponent() {
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
-  } = useForm<FormValues>();
+    watch,
+  } = useForm<FormValues>({
+    mode: "onChange",
+  });
 
+  const shift = watch("shift");
+
+  console.log(shift);
   function onSubmit(values: FormValues) {
     try {
       const encrypted = encrypt(values.messageToEncrypt, +values.shift);
@@ -153,6 +158,10 @@ function EncryptComponent() {
           placeholder="Message to encrypt"
           {...register("messageToEncrypt", {
             required: "This is required",
+            pattern: {
+              message: "Only letters are allowed",
+              value: /^[a-zA-Z ]+$/,
+            },
           })}
         />
         <FormErrorMessage>
@@ -161,7 +170,10 @@ function EncryptComponent() {
       </FormControl>
 
       <FormControl isInvalid={!!errors.shift}>
-        <FormLabel htmlFor="shift">Shift</FormLabel>
+        <FormLabel htmlFor="shift">
+          Shift (a-{">"}
+          {encrypt("a", +shift || 0)}){" "}
+        </FormLabel>
         <NumberInput>
           <NumberInputField
             id="shift"
